@@ -6,7 +6,7 @@ import '@openzeppelin/contracts/token/ERC1155/ERC1155.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol';
 
-contract FusionwaveFight is ERC1155, Ownable, ERC1155Supply {
+contract FusionFight is ERC1155, Ownable, ERC1155Supply {
   string public baseURI; // baseURI where token metadata is stored
   uint256 public totalSupply; // Total number of tokens minted
   uint256 public constant DEVIL = 0;
@@ -224,7 +224,7 @@ contract FusionwaveFight is ERC1155, Ownable, ERC1155Supply {
     return _battle;
   }
 
-/// @dev Player joins battle
+  /// @dev Player joins battle
   /// @param _name battle name; name of battle player wants to join
   function joinBattle(string memory _name) external returns (Battle memory) {
     Battle memory _battle = getBattle(_name);
@@ -307,3 +307,188 @@ contract FusionwaveFight is ERC1155, Ownable, ERC1155Supply {
     _resolveBattle(_battle);
   }
 
+  struct P {
+    uint index;
+    uint move;
+    uint health;
+    uint attack;
+    uint defense;
+  }
+
+  /// @dev Resolve battle function to determine winner and loser of battle
+  /// @param _battle battle; battle to resolve
+  function _resolveBattle(Battle memory _battle) internal {
+    P memory p1 = P(
+        playerInfo[_battle.players[0]],
+        _battle.moves[0],
+        getPlayer(_battle.players[0]).playerHealth,
+        getPlayerToken(_battle.players[0]).attackStrength,
+        getPlayerToken(_battle.players[0]).defenseStrength
+    );
+
+    P memory p2 = P(
+        playerInfo[_battle.players[1]],
+        _battle.moves[1],
+        getPlayer(_battle.players[1]).playerHealth,
+        getPlayerToken(_battle.players[1]).attackStrength,
+        getPlayerToken(_battle.players[1]).defenseStrength
+    );
+
+    address[2] memory _damagedPlayers = [address(0), address(0)];
+    
+    if (p1.move == 1 && p2.move == 1) {
+      if (p1.attack >= p2.health) {
+        _endBattle(_battle.players[0], _battle);
+      } else if (p2.attack >= p1.health) {
+        _endBattle(_battle.players[1], _battle);
+      } else {
+        players[p1.index].playerHealth -= p2.attack;
+        players[p2.index].playerHealth -= p1.attack;
+
+        players[p1.index].playerMana -= 3;
+        players[p2.index].playerMana -= 3;
+
+        // Both player's health damaged
+        _damagedPlayers = _battle.players;
+      }
+    } else if (p1.move == 1 && p2.move == 2) {
+      uint256 PHAD = p2.health + p2.defense;
+      if (p1.attack >= PHAD) {
+        _endBattle(_battle.players[0], _battle);
+      } else {
+        uint256 healthAfterAttack;
+        
+        if(p2.defense > p1.attack) {
+          healthAfterAttack = p2.health;
+        } else {
+          healthAfterAttack = PHAD - p1.attack;
+
+          // Player 2 health damaged
+          _damagedPlayers[0] = _battle.players[1];
+        }
+
+        players[p2.index].playerHealth = healthAfterAttack;
+
+        players[p1.index].playerMana -= 3;
+        players[p2.index].playerMana += 3;
+      }
+    } else if (p1.move == 2 && p2.move == 1) {
+      uint256 PHAD = p1.health + p1.defense;
+      if (p2.attack >= PHAD) {
+        _endBattle(_battle.players[1], _battle);
+      } else {
+        uint256 healthAfterAttack;
+        
+        if(p1.defense > p2.attack) {
+          healthAfterAttack = p1.health;
+        } else {
+          healthAfterAttack = PHAD - p2.attack;
+
+          // Player 1 health damaged
+          _damagedPlayers[0] = _battle.players[0];
+        }
+
+        players[p1.index].playerHealth = healthAfterAttack;
+
+        players[p1.index].playerMana += 3;
+        players[p2.index].playerMana -= 3;
+      }
+    } else if (p1.move == 2 && p2.move == 2) {
+        players[p1.index].playerMana += 3;
+        players[p2.index].playerMana += 3;
+    }
+
+    emit RoundEnded(
+      _damagedPlayers
+    );
+
+    // Reset moves to 0
+    _battle.moves[0] = 0;
+    _battle.moves[1] = 0;
+    updateBattle(_battle.name, _battle);
+
+    // Reset random attack and defense strength
+    uint256 _randomAttackStrengthPlayer1 = _createRandomNum(MAX_ATTACK_DEFEND_STRENGTH, _battle.players[0]);
+    gameTokens[playerTokenInfo[_battle.players[0]]].attackStrength = _randomAttackStrengthPlayer1;
+    gameTokens[playerTokenInfo[_battle.players[0]]].defenseStrength = MAX_ATTACK_DEFEND_STRENGTH - _randomAttackStrengthPlayer1;
+
+    uint256 _randomAttackStrengthPlayer2 = _createRandomNum(MAX_ATTACK_DEFEND_STRENGTH, _battle.players[1]);
+    gameTokens[playerTokenInfo[_battle.players[1]]].attackStrength = _randomAttackStrengthPlayer2;
+    gameTokens[playerTokenInfo[_battle.players[1]]].defenseStrength = MAX_ATTACK_DEFEND_STRENGTH - _randomAttackStrengthPlayer2;   
+  }
+
+  function quitBattle(string memory _battleName) public {
+    Battle memory _battle = getBattle(_battleName);
+    require(_battle.players[0] == msg.sender || _battle.players[1] == msg.sender, "You are not in this battle!");
+
+    _battle.players[0] == msg.sender ? _endBattle(_battle.players[1], _battle) : _endBattle(_battle.players[0], _battle);
+  }
+
+  /// @dev internal function to end the battle
+  /// @param battleEnder winner address
+  /// @param _battle battle; taken from attackOrDefend function
+  function _endBattle(address battleEnder, Battle memory _battle) internal returns (Battle memory) {
+    require(_battle.battleStatus != BattleStatus.ENDED, "Battle already ended"); // Require that battle has not ended
+
+    _battle.battleStatus = BattleStatus.ENDED;
+    _battle.winner = battleEnder;
+    updateBattle(_battle.name, _battle);
+
+    uint p1 = playerInfo[_battle.players[0]];
+    uint p2 = playerInfo[_battle.players[1]];
+
+    players[p1].inBattle = false;
+    players[p1].playerHealth = 25;
+    players[p1].playerMana = 10;
+
+    players[p2].inBattle = false;
+    players[p2].playerHealth = 25;
+    players[p2].playerMana = 10;
+
+    address _battleLoser = battleEnder == _battle.players[0] ? _battle.players[1] : _battle.players[0];
+
+    emit BattleEnded(_battle.name, battleEnder, _battleLoser); // Emits BattleEnded event
+
+    return _battle;
+  }
+
+  // Turns uint256 into string
+  function uintToStr(uint256 _i) internal pure returns (string memory _uintAsString) {
+    if (_i == 0) {
+      return '0';
+    }
+    uint256 j = _i;
+    uint256 len;
+    while (j != 0) {
+      len++;
+      j /= 10;
+    }
+    bytes memory bstr = new bytes(len);
+    uint256 k = len;
+    while (_i != 0) {
+      k = k - 1;
+      uint8 temp = (48 + uint8(_i - (_i / 10) * 10));
+      bytes1 b1 = bytes1(temp);
+      bstr[k] = b1;
+      _i /= 10;
+    }
+    return string(bstr);
+  }
+
+  // Token URI getter function
+  function tokenURI(uint256 tokenId) public view returns (string memory) {
+    return string(abi.encodePacked(baseURI, '/', uintToStr(tokenId), '.json'));
+  }
+
+  // The following functions are overrides required by Solidity.
+  function _beforeTokenTransfer(
+    address operator,
+    address from,
+    address to,
+    uint256[] memory ids,
+    uint256[] memory amounts,
+    bytes memory data
+  ) internal override(ERC1155, ERC1155Supply) {
+    super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
+  }
+}
