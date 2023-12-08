@@ -24,8 +24,8 @@ const config: HardhatUserConfig = {
       url: process.env.RPC_URL,
       accounts: [process.env.PRIVATE_KEY ?? ""],
     },
-    mantleTest: {
-      url: "https://rpc.testnet.mantle.xyz",
+    polygonzkEVM: {
+      url: "https://rpc.public.zkevm-test.net",
       accounts: [process.env.PRIVATE_KEY ?? ""],
     },
     arbitrumSepolia: {
@@ -49,11 +49,11 @@ const config: HardhatUserConfig = {
         },
       },
       {
-        network: "mantleTest",
-        chainId: 5001,
+        network: "polygonzkEVM",
+        chainId: 1442,
         urls: {
-          apiURL: "https://explorer.testnet.mantle.xyz/api",
-          browserURL: "https://explorer.testnet.mantle.xyz",
+          apiURL: "https://api-testnet-zkevm.polygonscan.com/api",
+          browserURL: "https://testnet-zkevm.polygonscan.com/",
         },
       },
       {

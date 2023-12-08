@@ -6,7 +6,7 @@ import '@openzeppelin/contracts/token/ERC1155/ERC1155.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol';
 
-contract FusionFight is ERC1155, Ownable, ERC1155Supply {
+contract FusionwaveFight is ERC1155, Ownable, ERC1155Supply {
   string public baseURI; // baseURI where token metadata is stored
   uint256 public totalSupply; // Total number of tokens minted
   uint256 public constant DEVIL = 0;
