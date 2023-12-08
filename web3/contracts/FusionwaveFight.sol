@@ -223,3 +223,87 @@ contract FusionwaveFight is ERC1155, Ownable, ERC1155Supply {
     
     return _battle;
   }
+
+/// @dev Player joins battle
+  /// @param _name battle name; name of battle player wants to join
+  function joinBattle(string memory _name) external returns (Battle memory) {
+    Battle memory _battle = getBattle(_name);
+
+    require(_battle.battleStatus == BattleStatus.PENDING, "Battle already started!"); // Require that battle has not started
+    require(_battle.players[0] != msg.sender, "Only player two can join a battle"); // Require that player 2 is joining the battle
+    require(!getPlayer(msg.sender).inBattle, "Already in battle"); // Require that player is not already in a battle
+    
+    _battle.battleStatus = BattleStatus.STARTED;
+    _battle.players[1] = msg.sender;
+    updateBattle(_name, _battle);
+
+    players[playerInfo[_battle.players[0]]].inBattle = true;
+    players[playerInfo[_battle.players[1]]].inBattle = true;
+
+    emit NewBattle(_battle.name, _battle.players[0], msg.sender); // Emits NewBattle event
+    return _battle;
+  }
+
+  // Read battle move info for player 1 and player 2
+  function getBattleMoves(string memory _battleName) public view returns (uint256 P1Move, uint256 P2Move) {
+    Battle memory _battle = getBattle(_battleName);
+
+    P1Move = _battle.moves[0];
+    P2Move = _battle.moves[1];
+
+    return (P1Move, P2Move);
+  }
+
+  function _registerPlayerMove(uint256 _player, uint8 _choice, string memory _battleName) internal {
+    require(_choice == 1 || _choice == 2, "Choice should be either 1 or 2!");
+    require(_choice == 1 ? getPlayer(msg.sender).playerMana >= 3 : true, "Mana not sufficient for attacking!");
+    battles[battleInfo[_battleName]].moves[_player] = _choice;
+  }
+
+  // User chooses attack or defense move for battle card
+  function attackOrDefendChoice(uint8 _choice, string memory _battleName) external {
+    Battle memory _battle = getBattle(_battleName);
+
+    require(
+        _battle.battleStatus == BattleStatus.STARTED,
+        "Battle not started. Please tell another player to join the battle"
+    ); // Require that battle has started
+    require(
+        _battle.battleStatus != BattleStatus.ENDED,
+        "Battle has already ended"
+    ); // Require that battle has not ended
+    require(
+      msg.sender == _battle.players[0] || msg.sender == _battle.players[1],
+      "You are not in this battle"
+    ); // Require that player is in the battle
+
+    require(_battle.moves[_battle.players[0] == msg.sender ? 0 : 1] == 0, "You have already made a move!");
+
+    _registerPlayerMove(_battle.players[0] == msg.sender ? 0 : 1, _choice, _battleName);
+
+    _battle = getBattle(_battleName);
+    uint _movesLeft = 2 - (_battle.moves[0] == 0 ? 0 : 1) - (_battle.moves[1] == 0 ? 0 : 1);
+    emit BattleMove(_battleName, _movesLeft == 1 ? true : false);
+    
+    if(_movesLeft == 0) {
+      _awaitBattleResults(_battleName);
+    }
+  }
+
+  // Awaits battle results
+  function _awaitBattleResults(string memory _battleName) internal {
+    Battle memory _battle = getBattle(_battleName);
+
+    require(
+      msg.sender == _battle.players[0] || msg.sender == _battle.players[1],
+      "Only players in this battle can make a move"
+    );
+
+    require(
+      _battle.moves[0] != 0 &&  _battle.moves[1] != 0,
+      "Players still need to make a move"
+    );
+
+    _resolveBattle(_battle);
+  }
+
