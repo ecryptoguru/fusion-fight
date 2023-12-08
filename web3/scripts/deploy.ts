@@ -15,11 +15,11 @@ async function main() {
 
   console.log(`Deploying a smart contract...`);
 
-  const FusionFight = (await deploy("FusionFight", _metadataUri)).connect(
-    admin
-  );
+  const FusionwaveFight = (
+    await deploy("FusionwaveFight", _metadataUri)
+  ).connect(admin);
 
-  console.log({ FusionFight: FusionFight.address });
+  console.log({ FusionwaveFight: FusionwaveFight.address });
 }
 
 main()
