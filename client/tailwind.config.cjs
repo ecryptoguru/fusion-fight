@@ -1,13 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./index.html', './src/**/*.{js,jsx}'],
+  content: ["./index.html", "./src/**/*.{js,jsx}"],
   theme: {
     extend: {
       colors: {
-        siteblack: '#131519',
-        siteDimBlack: '#191d23',
-        siteViolet: '#7f46f0',
-        siteWhite: '#9eacc7',
+        siteblack: "#131519",
+        siteDimBlack: "#191d23",
+        siteViolet: "#fd49a0",
+        siteWhite: "#9eacc7",
       },
       backgroundImage: {
         astral: "url('/src/assets/background/astral.jpg')",
@@ -18,7 +18,7 @@ module.exports = {
         landing: "url('/src/assets/background/landing.jpg')",
       },
       fontFamily: {
-        rajdhani: ['Rajdhani', 'sans-serif'],
+        rajdhani: ["Rajdhani", "sans-serif"],
       },
     },
   },
