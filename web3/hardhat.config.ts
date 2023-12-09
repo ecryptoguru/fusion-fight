@@ -4,16 +4,16 @@ import "dotenv/config";
 
 const config: HardhatUserConfig = {
   solidity: {
-    version: "0.8.16",
+    version: "0.8.20",
     settings: {
       viaIR: true,
       optimizer: {
         enabled: true,
-        runs: 100,
+        runs: 200,
       },
     },
   },
-  defaultNetwork: "sepolia", // chosen by default when the network isn't specified while running Hardhat
+  defaultNetwork: "scrollSepolia", // chosen by default when the network isn't specified while running Hardhat
   networks: {
     scrollSepolia: {
       url: process.env.RPC_URL || "https://sepolia-rpc.scroll.io",

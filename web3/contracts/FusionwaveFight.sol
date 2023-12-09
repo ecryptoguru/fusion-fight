@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.16;
+pragma solidity ^0.8.20;
 
 import '@openzeppelin/contracts/token/ERC1155/ERC1155.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
@@ -8,7 +8,7 @@ import '@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol';
 
 contract FusionwaveFight is ERC1155, Ownable, ERC1155Supply {
   string public baseURI; // baseURI where token metadata is stored
-  uint256 public totalSupply; // Total number of tokens minted
+  uint256 public TotalSupply; // Total number of tokens minted
   uint256 public constant DEVIL = 0;
   uint256 public constant GRIFFIN = 1;
   uint256 public constant FIREBIRD = 2;
@@ -117,7 +117,7 @@ contract FusionwaveFight is ERC1155, Ownable, ERC1155Supply {
 
   /// @dev Initializes the contract by setting a `metadataURI` to the token collection
   /// @param _metadataURI baseURI where token metadata is stored
-  constructor(string memory _metadataURI) ERC1155(_metadataURI) {
+  constructor(string memory _metadataURI, address initialOwner) ERC1155(_metadataURI) Ownable(initialOwner) ERC1155Supply() {
     baseURI = _metadataURI; // Set baseURI
     initialize();
   }
@@ -148,7 +148,8 @@ contract FusionwaveFight is ERC1155, Ownable, ERC1155Supply {
 
   /// @dev internal function to generate random number; used for Battle Card Attack and Defense Strength
   function _createRandomNum(uint256 _max, address _sender) internal view returns (uint256 randomValue) {
-    uint256 randomNum = uint256(keccak256(abi.encodePacked(block.difficulty, block.timestamp, _sender)));
+    uint256 randomNum = uint256(keccak256(abi.encodePacked(block.coinbase, block.timestamp, _sender)));
+
 
     randomValue = randomNum % _max;
     if(randomValue == 0) {
@@ -181,7 +182,7 @@ contract FusionwaveFight is ERC1155, Ownable, ERC1155Supply {
     playerTokenInfo[msg.sender] = _id;
 
     _mint(msg.sender, randId, 1, '0x0');
-    totalSupply++;
+    TotalSupply++;
     
     emit NewGameToken(msg.sender, randId, randAttackStrength, randDefenseStrength);
     return newGameToken;
@@ -197,7 +198,7 @@ contract FusionwaveFight is ERC1155, Ownable, ERC1155Supply {
   }
 
   function getTotalSupply() external view returns (uint256) {
-    return totalSupply;
+    return TotalSupply;
   }
 
   /// @dev Creates a new battle
@@ -481,14 +482,14 @@ contract FusionwaveFight is ERC1155, Ownable, ERC1155Supply {
   }
 
   // The following functions are overrides required by Solidity.
-  function _beforeTokenTransfer(
-    address operator,
+  function _update(
+  
     address from,
     address to,
     uint256[] memory ids,
-    uint256[] memory amounts,
-    bytes memory data
-  ) internal override(ERC1155, ERC1155Supply) {
-    super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
-  }
+    uint256[] memory values
+   
+) internal override(ERC1155, ERC1155Supply) {
+    super._update(from, to, ids, values);
+}
 }
