@@ -72,7 +72,7 @@ const Home = () => {
 export default PageHOC(
   Home,
   <>
-    Welcome to FusionFight <br /> a Web3 PvP Game
+    Welcome to FusionwaveFight <br /> a Web3 PvP Multiplayer Game
   </>,
   <>
     Connect your wallet to start playing <br /> the ultimate Web3 NFT Battle

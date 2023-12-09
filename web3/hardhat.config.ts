@@ -16,13 +16,9 @@ const config: HardhatUserConfig = {
   defaultNetwork: "scrollSepolia", // chosen by default when the network isn't specified while running Hardhat
   networks: {
     scrollSepolia: {
-      url: process.env.RPC_URL || "https://sepolia-rpc.scroll.io",
+      url: "https://sepolia-rpc.scroll.io",
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-    },
-    sepolia: {
-      url: process.env.RPC_URL,
-      accounts: [process.env.PRIVATE_KEY ?? ""],
     },
     polygonzkEVM: {
       url: "https://rpc.public.zkevm-test.net",

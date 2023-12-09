@@ -1,6 +1,6 @@
-# FusionFight
+# FusionwaveFight
 
-FusionFight is fully onchain NFT Card style turn based 2-player game. Both players compete with thier attack and defence points(randomised every round) and the player loosing all health bars looses.
+FusionwaveFight is fully onchain NFT Card style turn based 2-player game. Both players compete with thier attack and defence points(randomised every round) and the player loosing all health bars looses.
 
 # Tech Stack
 
