@@ -17,8 +17,7 @@ const config: HardhatUserConfig = {
   networks: {
     scrollSepolia: {
       url: "https://sepolia-rpc.scroll.io",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+      accounts: [process.env.PRIVATE_KEY ?? ""],
     },
     polygonzkEVM: {
       url: "https://rpc.public.zkevm-test.net",
