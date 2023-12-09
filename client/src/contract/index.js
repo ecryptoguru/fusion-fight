@@ -23,7 +23,7 @@ function getContractAddress(chainID) {
       return "0xcd9153aD5C981e30D560dE93454e590E476891A5"; //Arbitrum
 
     case 534351:
-      return "0x60E5f0084C98e4eF498386B95f4e5dc70d1A233c"; //Scroll
+      return "0x3E0D77A8a83a5ed416E30ab691eb3DaB0a0D9Cb5"; //Scroll
 
     case 5001:
       return "0xD1626a891B49F994B8344257047D27E5d37846D0"; //Mantle

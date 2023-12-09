@@ -13,22 +13,23 @@ const config: HardhatUserConfig = {
       },
     },
   },
-  defaultNetwork: "scrollSepolia", // chosen by default when the network isn't specified while running Hardhat
   networks: {
     scrollSepolia: {
-      url: "https://sepolia-rpc.scroll.io",
-      accounts: [process.env.PRIVATE_KEY ?? ""],
+      gasPrice: 700000000,
+      url: "https://sepolia-rpc.scroll.io" || "",
+      accounts:
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
-    polygonzkEVM: {
-      url: "https://rpc.public.zkevm-test.net",
+    mantleTest: {
+      url: "https://rpc.testnet.mantle.xyz",
       accounts: [process.env.PRIVATE_KEY ?? ""],
     },
     arbitrumSepolia: {
       url: "https://sepolia-rollup.arbitrum.io/rpc",
       accounts: [process.env.PRIVATE_KEY ?? ""],
     },
-    mantleTest: {
-      url: "https://rpc.testnet.mantle.xyz",
+    polygonzkEVM: {
+      url: "https://rpc.public.zkevm-test.net",
       accounts: [process.env.PRIVATE_KEY ?? ""],
     },
   },
@@ -43,16 +44,16 @@ const config: HardhatUserConfig = {
         network: "scrollSepolia",
         chainId: 534351,
         urls: {
-          apiURL: "https://sepolia-blockscout.scroll.io/api",
-          browserURL: "https://sepolia-blockscout.scroll.io/",
+          apiURL: "https://api-sepolia.scrollscan.com/api",
+          browserURL: "https://sepolia.scrollscan.io/",
         },
       },
       {
-        network: "polygonzkEVM",
-        chainId: 1442,
+        network: "mantleTest",
+        chainId: 5001,
         urls: {
-          apiURL: "https://api-testnet-zkevm.polygonscan.com/api",
-          browserURL: "https://testnet-zkevm.polygonscan.com/",
+          apiURL: "https://explorer.testnet.mantle.xyz/api",
+          browserURL: "https://explorer.testnet.mantle.xyz",
         },
       },
       {
@@ -64,11 +65,11 @@ const config: HardhatUserConfig = {
         },
       },
       {
-        network: "mantleTest",
-        chainId: 5001,
+        network: "polygonzkEVM",
+        chainId: 1442,
         urls: {
-          apiURL: "https://explorer.testnet.mantle.xyz/api",
-          browserURL: "https://explorer.testnet.mantle.xyz",
+          apiURL: "https://api-testnet-zkevm.polygonscan.com/api",
+          browserURL: "https://testnet-zkevm.polygonscan.com/",
         },
       },
     ],
