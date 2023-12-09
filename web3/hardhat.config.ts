@@ -1,5 +1,4 @@
 import { HardhatUserConfig } from "hardhat/types/config";
-import "@nomicfoundation/hardhat-verify";
 import "@nomicfoundation/hardhat-toolbox";
 import "dotenv/config";
 
