@@ -6,9 +6,9 @@ import '@openzeppelin/contracts/token/ERC1155/ERC1155.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol';
 
-contract FusionwaveFight is ERC1155, Ownable, ERC1155Supply {
+contract FusionFight is ERC1155, Ownable, ERC1155Supply {
   string public baseURI; // baseURI where token metadata is stored
-  uint256 public TotalSupply; // Total number of tokens minted
+  uint256 public fusiontotalSupply; // Total number of tokens minted in FusionFight
   uint256 public constant DEVIL = 0;
   uint256 public constant GRIFFIN = 1;
   uint256 public constant FIREBIRD = 2;
@@ -117,10 +117,11 @@ contract FusionwaveFight is ERC1155, Ownable, ERC1155Supply {
 
   /// @dev Initializes the contract by setting a `metadataURI` to the token collection
   /// @param _metadataURI baseURI where token metadata is stored
-  constructor(string memory _metadataURI, address initialOwner) ERC1155(_metadataURI) Ownable(initialOwner) ERC1155Supply() {
+  constructor(string memory _metadataURI) ERC1155(_metadataURI) Ownable(msg.sender) ERC1155Supply() {
     baseURI = _metadataURI; // Set baseURI
     initialize();
-  }
+}
+
 
   function setURI(string memory newuri) public onlyOwner {
     _setURI(newuri);
@@ -148,16 +149,20 @@ contract FusionwaveFight is ERC1155, Ownable, ERC1155Supply {
 
   /// @dev internal function to generate random number; used for Battle Card Attack and Defense Strength
   function _createRandomNum(uint256 _max, address _sender) internal view returns (uint256 randomValue) {
-    uint256 randomNum = uint256(keccak256(abi.encodePacked(block.coinbase, block.timestamp, _sender)));
+    bytes32 blockHash = blockhash(block.number - 1);
+    require(blockHash != 0, "Block hash not available");
 
+    uint256 randomNum = uint256(keccak256(abi.encodePacked(blockHash, block.timestamp, _sender)));
 
     randomValue = randomNum % _max;
     if(randomValue == 0) {
-      randomValue = _max / 2;
+        randomValue = _max / 2;
     }
 
     return randomValue;
-  }
+}
+
+  
 
   /// @dev internal function to create a new Battle Card
   function _createGameToken(string memory _name) internal returns (GameToken memory) {
@@ -182,7 +187,7 @@ contract FusionwaveFight is ERC1155, Ownable, ERC1155Supply {
     playerTokenInfo[msg.sender] = _id;
 
     _mint(msg.sender, randId, 1, '0x0');
-    TotalSupply++;
+    fusiontotalSupply++;
     
     emit NewGameToken(msg.sender, randId, randAttackStrength, randDefenseStrength);
     return newGameToken;
@@ -198,7 +203,7 @@ contract FusionwaveFight is ERC1155, Ownable, ERC1155Supply {
   }
 
   function getTotalSupply() external view returns (uint256) {
-    return TotalSupply;
+    return fusiontotalSupply;
   }
 
   /// @dev Creates a new battle
