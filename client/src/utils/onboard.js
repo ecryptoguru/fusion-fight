@@ -78,7 +78,8 @@ export const GetParams = async () => {
   if (
     getChainID() !== 534351 &&
     getChainID() !== 1442 &&
-    getChainID() !== 421614
+    getChainID() !== 421614 &&
+    getChainID() !== 5001
   ) {
     response.step = 2;
     return response;
@@ -107,7 +108,7 @@ export async function SwitchNetwork() {
       params: [
         {
           chainId: "0x8274f",
-          chainName: "scrollSepoliav",
+          chainName: "scrollSepolia",
           nativeCurrency: {
             name: "ETH",
             symbol: "ETH",

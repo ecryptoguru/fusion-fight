@@ -28,8 +28,8 @@ const config: HardhatUserConfig = {
       url: "https://sepolia-rollup.arbitrum.io/rpc",
       accounts: [process.env.PRIVATE_KEY ?? ""],
     },
-    Mumbai: {
-      url: "https://polygon-mumbai.infura.io/v3/bb5b40a66d904b65815f65a3fe29fd25",
+    mantleTest: {
+      url: "https://rpc.testnet.mantle.xyz",
       accounts: [process.env.PRIVATE_KEY ?? ""],
     },
   },
@@ -65,11 +65,11 @@ const config: HardhatUserConfig = {
         },
       },
       {
-        network: "Mumbai",
-        chainId: 80001,
+        network: "mantleTest",
+        chainId: 5001,
         urls: {
-          apiURL: "https://api-testnet.polygonscan.com/api",
-          browserURL: "https://mumbai.polygonscan.com/",
+          apiURL: "https://explorer.testnet.mantle.xyz/api",
+          browserURL: "https://explorer.testnet.mantle.xyz",
         },
       },
     ],

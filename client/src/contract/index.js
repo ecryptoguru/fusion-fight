@@ -25,6 +25,8 @@ function getContractAddress(chainID) {
     case 534351:
       return "0x60E5f0084C98e4eF498386B95f4e5dc70d1A233c"; //Scroll
 
+    case 5001:
+      return "0xcd9153aD5C981e30D560dE93454e590E476891A5"; //Mantle
     default:
       return null; // Return null for unknown chain IDs
   }
