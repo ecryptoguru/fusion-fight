@@ -38,7 +38,11 @@ const config: HardhatUserConfig = {
     },
   },
   etherscan: {
-    apiKey: process.env.API_KEY,
+    apiKey: {
+      scrollSepolia: "U83MHQBE237G23FPRTK5UK9GFUZ27BEE6E",
+      polygonzkEVM: "J4M7CG4GUP9SSARK668CEZ8HKT8NNCXUGM",
+      arbitrumSepolia: "DMC4ZTP2JEIYKEPKASY5G1DNM5BIPU8N73",
+    },
     customChains: [
       {
         network: "scrollSepolia",
