@@ -1,4 +1,4 @@
-import contract from "./FusionFight.json";
+import contract from "./FusionwaveFight.json";
 
 function isEthereum() {
   if (window.ethereum) {

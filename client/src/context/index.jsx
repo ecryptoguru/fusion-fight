@@ -9,7 +9,7 @@ import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import { useNavigate } from "react-router-dom";
 
-import { GetParams } from "../utils/onboard.js";
+import { GetParams } from "../utils/Onboard.js";
 import { ABI, ADDRESS } from "../contract";
 
 import { createEventListeners } from "./createEventListeners";
