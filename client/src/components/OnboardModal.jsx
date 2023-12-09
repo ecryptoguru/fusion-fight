@@ -62,7 +62,7 @@ const OnboardModal = () => {
           <>
             <p className={styles.modalText}>
               You're on a different network. Switch to Scroll/Arbitrum/zkEVM
-              sepolia testnets.
+              testnets.
             </p>
             <CustomButton title="Switch" handleClick={SwitchNetwork} />
           </>
