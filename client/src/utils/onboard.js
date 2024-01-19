@@ -79,7 +79,7 @@ export const GetParams = async () => {
     getChainID() !== 534351 &&
     getChainID() !== 1442 &&
     getChainID() !== 421614 &&
-    getChainID() !== 5001
+    getChainID() !== 1351057110
   ) {
     response.step = 2;
     return response;
@@ -93,7 +93,7 @@ export const GetParams = async () => {
   }
   response.balance = currentBalance;
 
-  if (currentBalance < 0.01) {
+  if (currentBalance < 0.00001) {
     response.step = 3;
     return response;
   }

@@ -20,8 +20,8 @@ const config: HardhatUserConfig = {
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
-    mantleTest: {
-      url: "https://rpc.testnet.mantle.xyz",
+    skaleTest: {
+      url: "https://staging-v3.skalenodes.com/v1/staging-fast-active-bellatrix",
       accounts: [process.env.PRIVATE_KEY ?? ""],
     },
     arbitrumSepolia: {
@@ -38,7 +38,7 @@ const config: HardhatUserConfig = {
       scrollSepolia: "U83MHQBE237G23FPRTK5UK9GFUZ27BEE6E",
       polygonzkEVM: "J4M7CG4GUP9SSARK668CEZ8HKT8NNCXUGM",
       arbitrumSepolia: "DMC4ZTP2JEIYKEPKASY5G1DNM5BIPU8N73",
-      mantleTest: "T4H44ZTMBIRQ8I4YXQPBNWE73B4AGP784C",
+      skaleTest: "T4H44ZTMBIRQ8I4YXQPBNWE73B4AGP784C",
     },
     customChains: [
       {
@@ -50,11 +50,11 @@ const config: HardhatUserConfig = {
         },
       },
       {
-        network: "mantleTest",
-        chainId: 5001,
+        network: "skaleTest",
+        chainId: 1351057110,
         urls: {
-          apiURL: "https://explorer.testnet.mantle.xyz/api",
-          browserURL: "https://explorer.testnet.mantle.xyz",
+          apiURL: "https://staging-fast-active-bellatrix.explorer.staging-v3.skalenodes.com/api",
+          browserURL: "https://staging-fast-active-bellatrix.explorer.staging-v3.skalenodes.com",
         },
       },
       {
