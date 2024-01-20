@@ -8,7 +8,7 @@ This is full-stack onchain web3 gaming Dapp, our tech stack includes Vite, React
 PolygonZKEVM,
 scrollSepolia,
 arbitrumSepolia and
-Mantle Testnets.
+Skale(Chaos) Testnets.
 
 website - https://game.fusionwaveai.com
 
