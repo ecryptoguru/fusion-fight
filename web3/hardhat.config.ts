@@ -28,7 +28,7 @@ const config: HardhatUserConfig = {
       url: "https://sepolia-rollup.arbitrum.io/rpc",
       accounts: [process.env.PRIVATE_KEY ?? ""],
     },
-    helaTestnet: {
+    helaTest: {
       url: "https://testnet-rpc.helachain.com",
       accounts: [process.env.PRIVATE_KEY ?? ""],
     },
@@ -36,7 +36,7 @@ const config: HardhatUserConfig = {
   etherscan: {
     apiKey: {
       scrollSepolia: "U83MHQBE237G23FPRTK5UK9GFUZ27BEE6E",
-      polygonzkEVM: "",
+      helaTest: "",
       arbitrumSepolia: "DMC4ZTP2JEIYKEPKASY5G1DNM5BIPU8N73",
       skaleTest: "",
     },
@@ -66,7 +66,7 @@ const config: HardhatUserConfig = {
         },
       },
       {
-        network: "helaTestnet",
+        network: "helaTest",
         chainId: 666888,
         urls: {
           apiURL: "https://testnet-blockexplorer.helachain.com/api",
