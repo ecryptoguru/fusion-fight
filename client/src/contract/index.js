@@ -16,7 +16,7 @@ function getChainID() {
 
 function getContractAddress(chainID) {
   switch (chainID) {
-    case 1442:
+    case 666888:
       return "0x0f2C0A451488e87E849B11459146775046Fcf3a4"; //zkEVM
 
     case 421614:

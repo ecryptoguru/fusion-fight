@@ -61,7 +61,7 @@ const OnboardModal = () => {
         return (
           <>
             <p className={styles.modalText}>
-              You're on a different network. Switch to Scroll/Arbitrum/zkEVM
+              You're on a different network. Switch to Scroll/Arbitrum/skale/hela
               testnets.
             </p>
             <CustomButton title="Switch" handleClick={SwitchNetwork} />
@@ -72,7 +72,7 @@ const OnboardModal = () => {
         return (
           <>
             <p className={styles.modalText}>
-              Oops, you dont ETH tokens in your account
+              Oops, you dont have .00001 tokens in your account
             </p>
             <CustomButton
               title="Grab some test tokens"

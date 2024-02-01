@@ -28,17 +28,17 @@ const config: HardhatUserConfig = {
       url: "https://sepolia-rollup.arbitrum.io/rpc",
       accounts: [process.env.PRIVATE_KEY ?? ""],
     },
-    polygonzkEVM: {
-      url: "https://rpc.public.zkevm-test.net",
+    helaTestnet: {
+      url: "https://testnet-rpc.helachain.com",
       accounts: [process.env.PRIVATE_KEY ?? ""],
     },
   },
   etherscan: {
     apiKey: {
       scrollSepolia: "U83MHQBE237G23FPRTK5UK9GFUZ27BEE6E",
-      polygonzkEVM: "J4M7CG4GUP9SSARK668CEZ8HKT8NNCXUGM",
+      polygonzkEVM: "",
       arbitrumSepolia: "DMC4ZTP2JEIYKEPKASY5G1DNM5BIPU8N73",
-      skaleTest: "T4H44ZTMBIRQ8I4YXQPBNWE73B4AGP784C",
+      skaleTest: "",
     },
     customChains: [
       {
@@ -66,11 +66,11 @@ const config: HardhatUserConfig = {
         },
       },
       {
-        network: "polygonzkEVM",
-        chainId: 1442,
+        network: "helaTestnet",
+        chainId: 666888,
         urls: {
-          apiURL: "https://api-testnet-zkevm.polygonscan.com/api",
-          browserURL: "https://testnet-zkevm.polygonscan.com/",
+          apiURL: "https://testnet-blockexplorer.helachain.com/api",
+          browserURL: "https://testnet-blockexplorer.helachain.com/",
         },
       },
     ],
