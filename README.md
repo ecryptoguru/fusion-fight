@@ -5,8 +5,8 @@ FusionwaveFight is fully onchain NFT Card style turn based 2-player game. Both p
 # Tech Stack
 
 This is full-stack onchain web3 gaming Dapp, our tech stack includes Vite, Reactjs, React-tilt, TailwindCSS, JavaScript, Nodejs, TypeScript, Hardhat and Ethersjs. The client(frontend) is deployed on Netlify and the smartcontract is deployed on
-helaTestnet,
 scrollSepolia,
+helaTestnet,
 arbitrumSepolia and
 Skale(Chaos) Testnets.
 
