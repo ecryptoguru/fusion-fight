@@ -10,7 +10,7 @@ helaTestnet,
 arbitrumSepolia and
 Skale(Chaos) Testnets.
 
-website - [https://game.fusionwaveai.com](https://fusionwavefight.netlify.app/)
+website - https://fusionwavefight.netlify.app/
 
 # Verified contract addresses
 
